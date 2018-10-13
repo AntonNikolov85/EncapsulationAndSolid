@@ -11,25 +11,22 @@ namespace Encapsulation
     {
         public string WorkingDirectory { get; set; }
 
-        public string Save(int id, string message)
+        public void Save(int id, string message)
         {
-            var path = Path.Combine(this.WorkingDirectory, id + ".txt");
+            var path = this.GetFileName(id);
             File.WriteAllText(path, message);
-            return path;
         }
 
-        public event EventHandler<MessageEventArgs> MessageRead;
-
-        public void Read(int id)
+        public string Read(int id)
         {
-            var path = Path.Combine(this.WorkingDirectory, id + ".txt");
+            var path = this.GetFileName(id);
             var msg = File.ReadAllText(path);
-            this.MessageRead(this, new MessageEventArgs { Message = msg });
+            return msg;
         }
-    }
 
-    public class MessageEventArgs
-    {
-        public string Message { get; set; }
+        public string GetFileName(int id)
+        {
+            return Path.Combine(this.WorkingDirectory, id + ".txt");
+        }
     }
 }
