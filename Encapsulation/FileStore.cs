@@ -31,15 +31,15 @@ namespace Encapsulation
             File.WriteAllText(path, message);
         }
 
-        public string Read(int id)
+        public Maybe<string> Read(int id)
         {
             var path = this.GetFileName(id);
             if (!File.Exists(path))
             {
-                throw new ArgumentException("there s no file with that id", "id");
+                return new Maybe<string>();
             }
-            var msg = File.ReadAllText(path);
-            return msg;
+            var message = File.ReadAllText(path);
+            return new Maybe<string>(message);
         }
 
         public string GetFileName(int id)
