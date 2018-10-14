@@ -9,7 +9,21 @@ namespace Encapsulation
 {
     public class FileStore
     {
-        public string WorkingDirectory { get; set; }
+        public FileStore(string workingDirectory)
+        {
+            if (workingDirectory == null)
+            {
+                throw new ArgumentNullException("workingDirectory");
+            }
+            if (!Directory.Exists(workingDirectory))
+            {
+                throw new ArgumentException("Non existing directory", "workingDirectory");
+            }
+
+            this.WorkingDirectory = workingDirectory;
+        }
+
+        public string WorkingDirectory { get; private set; }
 
         public void Save(int id, string message)
         {
@@ -17,11 +31,15 @@ namespace Encapsulation
             File.WriteAllText(path, message);
         }
 
-        public string Read(int id)
+        public Maybe<string> Read(int id)
         {
             var path = this.GetFileName(id);
-            var msg = File.ReadAllText(path);
-            return msg;
+            if (!File.Exists(path))
+            {
+                return new Maybe<string>();
+            }
+            var message = File.ReadAllText(path);
+            return new Maybe<string>(message);
         }
 
         public string GetFileName(int id)
