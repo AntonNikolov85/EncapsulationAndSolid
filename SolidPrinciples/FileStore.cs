@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Serilog;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,42 +11,51 @@ namespace SolidPrinciples
 {
     public class FileStore
     {
-        public FileStore(string workingDirectory)
+        public FileStore(DirectoryInfo workingDirectory)
         {
             if (workingDirectory == null)
             {
                 throw new ArgumentNullException("workingDirectory");
             }
-            if (!Directory.Exists(workingDirectory))
+            if (!Directory.Exists(workingDirectory.Name))
             {
                 throw new ArgumentException("Non existing directory", "workingDirectory");
             }
 
+            this.Cache = new ConcurrentDictionary<int, string>();
             this.WorkingDirectory = workingDirectory;
         }
 
-        public string WorkingDirectory { get; private set; }
+        public ConcurrentDictionary<int, string> Cache { get; private set; }
+
+        public DirectoryInfo WorkingDirectory { get; private set; }
 
         public void Save(int id, string message)
         {
-            var path = this.GetFileName(id);
-            File.WriteAllText(path, message);
+            Log.Information("Saving message {id}.", id);
+            var file = this.GetFileInfo(id, this.WorkingDirectory.FullName);
+            File.WriteAllText(file.FullName, message);
+            this.Cache.AddOrUpdate(id, message, (i,s) => message);
+            Log.Information("Saved message {id}.", id);
         }
 
         public Maybe<string> Read(int id)
         {
-            var path = this.GetFileName(id);
-            if (!File.Exists(path))
+            Log.Debug("Reading message {id}.", id);
+            var file = this.GetFileInfo(id, this.WorkingDirectory.FullName);
+            if (!file.Exists)
             {
+                Log.Debug("No message {id} found.", id);
                 return new Maybe<string>();
             }
-            var message = File.ReadAllText(path);
+            var message = this.Cache.GetOrAdd(id, _ => File.ReadAllText(file.FullName));
+            Log.Debug("Returing message {id}.", id);
             return new Maybe<string>(message);
         }
 
-        public string GetFileName(int id)
+        public FileInfo GetFileInfo(int id, string workingDirectory)
         {
-            return Path.Combine(this.WorkingDirectory, id + ".txt");
+            return new FileInfo(Path.Combine(workingDirectory, id + ".txt"));
         }
     }
 }
