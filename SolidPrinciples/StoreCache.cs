@@ -16,12 +16,12 @@ namespace SolidPrinciples
             this.cache = new ConcurrentDictionary<int, string>();
         }
 
-        public void AddOrUpdate(int id, string message)
+        public virtual void AddOrUpdate(int id, string message)
         {
             this.cache.AddOrUpdate(id, message, (i, s) => message);
         }
 
-        public string GetOrAdd(int id, Func<int, string> messageFactory)
+        public virtual string GetOrAdd(int id, Func<int, string> messageFactory)
         {
             return this.cache.GetOrAdd(id, messageFactory);
         }

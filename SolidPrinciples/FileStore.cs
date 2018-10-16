@@ -9,17 +9,17 @@ namespace SolidPrinciples
 {
     public class FileStore
     {
-        public void WriteAllText(string path, string message)
+        public virtual void WriteAllText(string path, string message)
         {
             File.WriteAllText(path, message);
         }
 
-        public string ReadAllText(string path)
+        public virtual string ReadAllText(string path)
         {
             return File.ReadAllText(path);
         }
 
-        public FileInfo GetFileInfo(int id, string workingDirectory)
+        public virtual FileInfo GetFileInfo(int id, string workingDirectory)
         {
             return new FileInfo(Path.Combine(workingDirectory, id + ".txt"));
         } 

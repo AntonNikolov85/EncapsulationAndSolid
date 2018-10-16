@@ -26,6 +26,7 @@ namespace SolidPrinciples
                 throw new ArgumentException("Non existing directory", "workingDirectory");
             }
 
+            this.WorkingDirectory = workingDirectory;
             this.logger = new StoreLogger();
             this.cache = new StoreCache();
             this.fileStore = new FileStore();
@@ -36,8 +37,8 @@ namespace SolidPrinciples
         public void Save(int id, string message)
         {
             this.logger.Saving(id);
-            var file = this.fileStore.GetFileInfo(id, this.WorkingDirectory.FullName);
-            this.fileStore.WriteAllText(file.FullName, message);
+            var file = this.Store.GetFileInfo(id, this.WorkingDirectory.FullName);
+            this.Store.WriteAllText(file.FullName, message);
             this.cache.AddOrUpdate(id, message);
             this.logger.Saved(id);
         }
@@ -45,15 +46,30 @@ namespace SolidPrinciples
         public Maybe<string> Read(int id)
         {
             this.logger.Reading(id);
-            var file = this.fileStore.GetFileInfo(id, this.WorkingDirectory.FullName);
+            var file = this.Store.GetFileInfo(id, this.WorkingDirectory.FullName);
             if (!file.Exists)
             {
                 this.logger.DidNotFind(id);
                 return new Maybe<string>();
             }
-            var message = this.cache.GetOrAdd(id, _ => this.fileStore.ReadAllText(file.FullName));
+            var message = this.cache.GetOrAdd(id, _ => this.Store.ReadAllText(file.FullName));
             this.logger.Returning(id);
             return new Maybe<string>(message);
+        }
+
+        protected virtual StoreLogger Logger
+        {
+            get { return this.logger; }
+        }
+
+        protected virtual StoreCache Cache
+        {
+            get { return this.cache; }
+        }
+
+        protected virtual FileStore Store
+        {
+            get { return this.fileStore; }
         }
     }
 }
