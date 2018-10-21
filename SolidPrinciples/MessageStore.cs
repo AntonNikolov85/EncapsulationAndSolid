@@ -45,15 +45,16 @@ namespace SolidPrinciples
         public Maybe<string> Read(int id)
         {
             this.logger.Reading(id);
-            var file = this.Store.GetFileInfo(id);
-            if (!file.Exists)
+            Maybe<string> message = this.cache.GetOrAdd(id, _ => this.Store.ReadAllText(id));
+            if (message.Any())
+            {
+                this.logger.Returning(id);
+            }
+            else
             {
                 this.logger.DidNotFind(id);
-                return new Maybe<string>();
             }
-            var message = this.cache.GetOrAdd(id, _ => this.Store.ReadAllText(file.FullName));
-            this.logger.Returning(id);
-            return new Maybe<string>(message);
+            return message;
         }
 
         protected virtual StoreLogger Logger

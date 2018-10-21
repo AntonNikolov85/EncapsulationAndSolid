@@ -30,9 +30,15 @@ namespace SolidPrinciples
             File.WriteAllText(path, message);
         }
 
-        public virtual string ReadAllText(string path)
+        public virtual Maybe<string> ReadAllText(int id)
         {
-            return File.ReadAllText(path);
+            var file = this.GetFileInfo(id);
+            if (!file.Exists)
+            {
+                return new Maybe<string>();
+            }
+            string path = GetFileInfo(id).FullName;
+            return new Maybe<string>(File.ReadAllText(path));
         }
 
         public virtual FileInfo GetFileInfo(int id)

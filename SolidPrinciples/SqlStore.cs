@@ -15,9 +15,9 @@ namespace SolidPrinciples
             throw new NotImplementedException();
         }
 
-        public string ReadAllText(string path)
+        public Maybe<string> ReadAllText(int id)
         {
-            using (SqlConnection connection = new SqlConnection(path))
+            using (SqlConnection connection = new SqlConnection(id.ToString()))
             {
                 connection.Open();
 
@@ -33,7 +33,7 @@ namespace SolidPrinciples
                 }
             }
 
-            return path;
+            return new Maybe<string>(id.ToString());
         }
 
         public void WriteAllText(int id, string message)

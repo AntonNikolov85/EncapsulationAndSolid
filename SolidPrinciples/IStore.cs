@@ -5,7 +5,7 @@ namespace SolidPrinciples
     public interface IStore
     {
         FileInfo GetFileInfo(int id);
-        string ReadAllText(string path);
+        Maybe<string> ReadAllText(int id);
         void WriteAllText(int id, string message);
     }
 }
