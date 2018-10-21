@@ -10,7 +10,7 @@ namespace SolidPrinciples
 {
     public class SqlStore : IStore
     {
-        public FileInfo GetFileInfo(int id, string workingDirectory)
+        public FileInfo GetFileInfo(int id)
         {
             throw new NotImplementedException();
         }
@@ -36,9 +36,9 @@ namespace SolidPrinciples
             return path;
         }
 
-        public void WriteAllText(string path, string message)
+        public void WriteAllText(int id, string message)
         {
-            using (SqlConnection connection = new SqlConnection(path))
+            using (SqlConnection connection = new SqlConnection(id.ToString()))
             {
                 connection.Open();
 

@@ -29,7 +29,7 @@ namespace SolidPrinciples
             this.WorkingDirectory = workingDirectory;
             this.logger = new StoreLogger();
             this.cache = new StoreCache();
-            this.store = new FileStore();
+            this.store = new FileStore(workingDirectory);
         }
 
         public DirectoryInfo WorkingDirectory { get; private set; }
@@ -37,8 +37,7 @@ namespace SolidPrinciples
         public void Save(int id, string message)
         {
             this.logger.Saving(id);
-            var file = this.Store.GetFileInfo(id, this.WorkingDirectory.FullName);
-            this.Store.WriteAllText(file.FullName, message);
+            this.Store.WriteAllText(id, message);
             this.cache.AddOrUpdate(id, message);
             this.logger.Saved(id);
         }
@@ -46,7 +45,7 @@ namespace SolidPrinciples
         public Maybe<string> Read(int id)
         {
             this.logger.Reading(id);
-            var file = this.Store.GetFileInfo(id, this.WorkingDirectory.FullName);
+            var file = this.Store.GetFileInfo(id);
             if (!file.Exists)
             {
                 this.logger.DidNotFind(id);

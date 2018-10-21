@@ -4,8 +4,8 @@ namespace SolidPrinciples
 {
     public interface IStore
     {
-        FileInfo GetFileInfo(int id, string workingDirectory);
+        FileInfo GetFileInfo(int id);
         string ReadAllText(string path);
-        void WriteAllText(string path, string message);
+        void WriteAllText(int id, string message);
     }
 }
