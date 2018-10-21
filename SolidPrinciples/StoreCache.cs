@@ -9,21 +9,22 @@ namespace SolidPrinciples
 {
     public class StoreCache
     {
-        private readonly ConcurrentDictionary<int, string> cache;
+        private readonly ConcurrentDictionary<int, Maybe<string>> cache;
 
         public StoreCache()
         {
-            this.cache = new ConcurrentDictionary<int, string>();
+            this.cache = new ConcurrentDictionary<int, Maybe<string>>();
         }
 
         public virtual void AddOrUpdate(int id, string message)
         {
-            this.cache.AddOrUpdate(id, message, (i, s) => message);
+            Maybe<string> msg = new Maybe<string>(message);
+            this.cache.AddOrUpdate(id, msg, (i, s) => msg);
         }
 
-        public virtual string GetOrAdd(int id, Func<int, string> messageFactory)
+        public virtual Maybe<string> GetOrAdd(int id, Func<int, Maybe<string>> messageFactory)
         {
-            return this.cache.GetOrAdd(id, messageFactory);
+            return this.cache.GetOrAdd(id, i => messageFactory(i));
         }
     }
 }

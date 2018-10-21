@@ -7,21 +7,43 @@ using System.Threading.Tasks;
 
 namespace SolidPrinciples
 {
-    public class FileStore
+    public class FileStore : IStore
     {
-        public virtual void WriteAllText(string path, string message)
+        private readonly DirectoryInfo workingDirectory;
+
+        public FileStore(DirectoryInfo workingDirectory)
         {
+            if (workingDirectory == null)
+            {
+                throw new ArgumentNullException("workingDirectory");
+            }
+            if (!Directory.Exists(workingDirectory.Name))
+            {
+                throw new ArgumentException("Non existing directory", "workingDirectory");
+            }
+
+            this.workingDirectory = workingDirectory;
+        }
+        public virtual void WriteAllText(int id, string message)
+        {
+            string path = GetFileInfo(id).FullName;
             File.WriteAllText(path, message);
         }
 
-        public virtual string ReadAllText(string path)
+        public virtual Maybe<string> ReadAllText(int id)
         {
-            return File.ReadAllText(path);
+            var file = this.GetFileInfo(id);
+            if (!file.Exists)
+            {
+                return new Maybe<string>();
+            }
+            string path = GetFileInfo(id).FullName;
+            return new Maybe<string>(File.ReadAllText(path));
         }
 
-        public virtual FileInfo GetFileInfo(int id, string workingDirectory)
+        public virtual FileInfo GetFileInfo(int id)
         {
-            return new FileInfo(Path.Combine(workingDirectory, id + ".txt"));
+            return new FileInfo(Path.Combine(this.workingDirectory.FullName, id + ".txt"));
         } 
     }
 }
