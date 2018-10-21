@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SolidPrinciples
 {
-    public class FileStore
+    public class FileStore : IStore
     {
         public virtual void WriteAllText(string path, string message)
         {

@@ -13,7 +13,7 @@ namespace SolidPrinciples
     {
         private readonly StoreLogger logger;
         private readonly StoreCache cache;
-        private readonly FileStore fileStore;
+        private readonly IStore store;
 
         public MessageStore(DirectoryInfo workingDirectory)
         {
@@ -29,7 +29,7 @@ namespace SolidPrinciples
             this.WorkingDirectory = workingDirectory;
             this.logger = new StoreLogger();
             this.cache = new StoreCache();
-            this.fileStore = new FileStore();
+            this.store = new FileStore();
         }
 
         public DirectoryInfo WorkingDirectory { get; private set; }
@@ -67,9 +67,9 @@ namespace SolidPrinciples
             get { return this.cache; }
         }
 
-        protected virtual FileStore Store
+        protected virtual IStore Store
         {
-            get { return this.fileStore; }
+            get { return this.store; }
         }
     }
 }
