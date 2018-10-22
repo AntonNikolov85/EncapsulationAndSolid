@@ -60,7 +60,9 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoreCache.cs" />
+	<Compile Include="IStoreCache.cs" />
     <Compile Include="StoreLogger.cs" />
+	<Compile Include="IStoreLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
