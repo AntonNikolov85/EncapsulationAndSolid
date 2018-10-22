@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SolidPrinciples
 {
-    public class FileStore : IStore
+    public class FileStore : IStore, IFileLocator
     {
         private readonly DirectoryInfo workingDirectory;
 

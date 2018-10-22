@@ -10,11 +10,6 @@ namespace SolidPrinciples
 {
     public class SqlStore : IStore
     {
-        public FileInfo GetFileInfo(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public Maybe<string> ReadAllText(int id)
         {
             using (SqlConnection connection = new SqlConnection(id.ToString()))
