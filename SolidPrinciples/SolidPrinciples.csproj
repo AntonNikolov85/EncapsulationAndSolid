@@ -53,14 +53,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileStore.cs" />
+    <Compile Include="IFileLocator.cs" />
     <Compile Include="IStore.cs" />
+    <Compile Include="IStoreWriter.cs" />
+    <Compile Include="LogSavedStoreWriter.cs" />
+    <Compile Include="LogSavingStoreWriter.cs" />
     <Compile Include="MessageStore.cs" />
     <Compile Include="Maybe.cs" />
     <Compile Include="SqlStore.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoreCache.cs" />
+    <Compile Include="IStoreCache.cs" />
     <Compile Include="StoreLogger.cs" />
+    <Compile Include="IStoreLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

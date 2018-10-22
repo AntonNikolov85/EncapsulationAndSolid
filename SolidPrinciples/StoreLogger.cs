@@ -7,18 +7,8 @@ using System.Threading.Tasks;
 
 namespace SolidPrinciples
 {
-    public class StoreLogger
+    public class StoreLogger : IStoreLogger
     {
-        public virtual void Saving(int id)
-        {
-            Log.Information("Saving message {id}.", id);
-        }
-
-        public virtual void Saved(int id)
-        {
-            Log.Information("Saved message {id}.", id);
-        }
-
         public virtual void Reading(int id)
         {
             Log.Debug("Reading message {id}.", id);

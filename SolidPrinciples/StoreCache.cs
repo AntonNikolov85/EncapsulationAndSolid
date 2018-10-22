@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SolidPrinciples
 {
-    public class StoreCache
+    public class StoreCache : IStoreCache
     {
         private readonly ConcurrentDictionary<int, Maybe<string>> cache;
 
@@ -16,7 +16,7 @@ namespace SolidPrinciples
             this.cache = new ConcurrentDictionary<int, Maybe<string>>();
         }
 
-        public virtual void AddOrUpdate(int id, string message)
+        public virtual void Save(int id, string message)
         {
             Maybe<string> msg = new Maybe<string>(message);
             this.cache.AddOrUpdate(id, msg, (i, s) => msg);
