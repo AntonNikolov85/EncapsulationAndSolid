@@ -31,7 +31,7 @@ namespace SolidPrinciples
             return new Maybe<string>(id.ToString());
         }
 
-        public void WriteAllText(int id, string message)
+        public void Save(int id, string message)
         {
             using (SqlConnection connection = new SqlConnection(id.ToString()))
             {

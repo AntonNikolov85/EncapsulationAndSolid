@@ -9,12 +9,12 @@ namespace SolidPrinciples
 {
     public class StoreLogger : IStoreLogger
     {
-        public virtual void Saving(int id)
+        public virtual void Saving(int id, string message)
         {
             Log.Information("Saving message {id}.", id);
         }
 
-        public virtual void Saved(int id)
+        public virtual void Saved(int id, string message)
         {
             Log.Information("Saved message {id}.", id);
         }

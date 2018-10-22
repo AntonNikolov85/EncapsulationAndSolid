@@ -11,8 +11,8 @@ namespace SolidPrinciples
 {
     public class MessageStore
     {
-        private readonly StoreLogger logger;
-        private readonly StoreCache cache;
+        private readonly IStoreLogger logger;
+        private readonly IStoreCache cache;
         private readonly IStore store;
 
         public MessageStore(DirectoryInfo workingDirectory)
@@ -36,10 +36,10 @@ namespace SolidPrinciples
 
         public void Save(int id, string message)
         {
-            this.Logger.Saving(id);
-            this.Store.WriteAllText(id, message);
-            this.Cache.AddOrUpdate(id, message);
-            this.Logger.Saved(id);
+            this.Logger.Saving(id, message);
+            this.Store.Save(id, message);
+            this.Cache.Save(id, message);
+            this.Logger.Saved(id, message);
         }
 
         public Maybe<string> Read(int id)
@@ -57,12 +57,12 @@ namespace SolidPrinciples
             return message;
         }
 
-        protected virtual StoreLogger Logger
+        protected virtual IStoreLogger Logger
         {
             get { return this.logger; }
         }
 
-        protected virtual StoreCache Cache
+        protected virtual IStoreCache Cache
         {
             get { return this.cache; }
         }

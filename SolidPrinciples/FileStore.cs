@@ -24,7 +24,7 @@ namespace SolidPrinciples
 
             this.workingDirectory = workingDirectory;
         }
-        public virtual void WriteAllText(int id, string message)
+        public virtual void Save(int id, string message)
         {
             string path = GetFileInfo(id).FullName;
             File.WriteAllText(path, message);

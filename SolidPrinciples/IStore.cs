@@ -5,6 +5,6 @@ namespace SolidPrinciples
     public interface IStore
     {
         Maybe<string> ReadAllText(int id);
-        void WriteAllText(int id, string message);
+        void Save(int id, string message);
     }
 }
