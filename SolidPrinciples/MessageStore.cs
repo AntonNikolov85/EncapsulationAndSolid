@@ -36,10 +36,10 @@ namespace SolidPrinciples
 
         public void Save(int id, string message)
         {
-            this.Logger.Saving(id, message);
+            new LogSavingStoreWriter().Save(id, message);
             this.Store.Save(id, message);
             this.Cache.Save(id, message);
-            this.Logger.Saved(id, message);
+            new LogSavedStoreWriter().Save(id, message);
         }
 
         public Maybe<string> Read(int id)
