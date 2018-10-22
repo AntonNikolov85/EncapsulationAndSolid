@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SolidPrinciples
 {
-    public class StoreLogger
+    public class StoreLogger : IStoreLogger
     {
         public virtual void Saving(int id)
         {
