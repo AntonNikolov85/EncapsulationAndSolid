@@ -56,6 +56,7 @@
     <Compile Include="IFileLocator.cs" />
     <Compile Include="IStore.cs" />
     <Compile Include="IStoreWriter.cs" />
+	<Compile Include="CompositeStoreWriter.cs" />
     <Compile Include="LogSavedStoreWriter.cs" />
     <Compile Include="LogSavingStoreWriter.cs" />
     <Compile Include="MessageStore.cs" />
