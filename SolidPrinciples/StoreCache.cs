@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SolidPrinciples
 {
-    public class StoreCache : IStoreCache
+    public class StoreCache : IStoreCache, IStoreWriter
     {
         private readonly ConcurrentDictionary<int, Maybe<string>> cache;
 
