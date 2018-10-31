@@ -10,7 +10,7 @@ namespace SolidPrinciples
 {
     public class SqlStore : IStore
     {
-        public Maybe<string> ReadAllText(int id)
+        public Maybe<string> Read(int id)
         {
             using (SqlConnection connection = new SqlConnection(id.ToString()))
             {

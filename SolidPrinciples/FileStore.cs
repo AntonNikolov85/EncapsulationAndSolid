@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SolidPrinciples
 {
-    public class FileStore : IStore, IFileLocator, IStoreWriter
+    public class FileStore : IStore, IFileLocator, IStoreWriter, IStoreReader
     {
         private readonly DirectoryInfo workingDirectory;
 
@@ -30,7 +30,7 @@ namespace SolidPrinciples
             File.WriteAllText(path, message);
         }
 
-        public virtual Maybe<string> ReadAllText(int id)
+        public virtual Maybe<string> Read(int id)
         {
             var file = this.GetFileInfo(id);
             if (!file.Exists)

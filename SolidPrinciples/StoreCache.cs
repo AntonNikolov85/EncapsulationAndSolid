@@ -7,15 +7,17 @@ using System.Threading.Tasks;
 
 namespace SolidPrinciples
 {
-    public class StoreCache : IStoreCache, IStoreWriter
+    public class StoreCache : IStoreCache, IStoreWriter, IStoreReader
     {
         private readonly ConcurrentDictionary<int, Maybe<string>> cache;
         private readonly IStoreWriter writer;
+        private readonly IStoreReader reader;
 
-        public StoreCache(IStoreWriter writer)
+        public StoreCache(IStoreWriter writer, IStoreReader reader)
         {
             this.cache = new ConcurrentDictionary<int, Maybe<string>>();
             this.writer = writer;
+            this.reader = reader;
         }
 
         public virtual void Save(int id, string message)
@@ -25,9 +27,21 @@ namespace SolidPrinciples
             this.cache.AddOrUpdate(id, msg, (i, s) => msg);
         }
 
-        public virtual Maybe<string> GetOrAdd(int id, Func<int, Maybe<string>> messageFactory)
+        public virtual Maybe<string> Read(int id)
         {
-            return this.cache.GetOrAdd(id, i => messageFactory(i));
+            Maybe<string> returnValue;
+            if (this.cache.TryGetValue(id,out returnValue))
+            {
+                return returnValue;
+            }
+
+            returnValue = this.reader.Read(id);
+            if (returnValue.Any())
+            {
+                this.cache.AddOrUpdate(id, returnValue, (i, r) => returnValue);
+            }
+
+            return returnValue;
         }
     }
 }

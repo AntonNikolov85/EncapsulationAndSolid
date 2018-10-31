@@ -4,6 +4,7 @@ namespace SolidPrinciples
 {
     public interface IStoreCache
     {
-        Maybe<string> GetOrAdd(int id, Func<int, Maybe<string>> messageFactory);
+        void Save(int id, string message);
+        Maybe<string> Read(int id);
     }
 }

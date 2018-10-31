@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="FileStore.cs" />
     <Compile Include="IFileLocator.cs" />
+    <Compile Include="IReader.cs" />
     <Compile Include="IStore.cs" />
     <Compile Include="IStoreWriter.cs" />
     <Compile Include="CompositeStoreWriter.cs" />
