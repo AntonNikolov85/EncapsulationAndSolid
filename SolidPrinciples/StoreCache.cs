@@ -10,14 +10,17 @@ namespace SolidPrinciples
     public class StoreCache : IStoreCache, IStoreWriter
     {
         private readonly ConcurrentDictionary<int, Maybe<string>> cache;
+        private readonly IStoreWriter writer;
 
-        public StoreCache()
+        public StoreCache(IStoreWriter writer)
         {
             this.cache = new ConcurrentDictionary<int, Maybe<string>>();
+            this.writer = writer;
         }
 
         public virtual void Save(int id, string message)
         {
+            this.writer.Save(id, message);
             Maybe<string> msg = new Maybe<string>(message);
             this.cache.AddOrUpdate(id, msg, (i, s) => msg);
         }

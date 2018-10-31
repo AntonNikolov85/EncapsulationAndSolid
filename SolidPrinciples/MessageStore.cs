@@ -28,12 +28,13 @@ namespace SolidPrinciples
             }
 
             this.WorkingDirectory = workingDirectory;
-            this.logger = new StoreLogger();
-            var c = new StoreCache();
-            this.cache = c;
             var fileStore = new FileStore(workingDirectory);
+            var c = new StoreCache(fileStore);
+            var l = new StoreLogger(c);
+            this.logger = l;
+            this.cache = c;
             this.store = fileStore;
-            this.writer = new CompositeStoreWriter(new LogSavingStoreWriter(), c, fileStore, new LogSavedStoreWriter());
+            this.writer = new CompositeStoreWriter(l);
         }
 
         public DirectoryInfo WorkingDirectory { get; private set; }
