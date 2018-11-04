@@ -16,6 +16,7 @@ namespace SolidPrinciples
         private readonly IStore store;
         private readonly IStoreWriter writer;
         private readonly IStoreReader reader;
+        private readonly IFileLocator fileLocator;
 
         public MessageStore(DirectoryInfo workingDirectory)
         {
@@ -35,6 +36,7 @@ namespace SolidPrinciples
             this.logger = l;
             this.cache = c;
             this.store = fileStore;
+            this.fileLocator = fileStore;
             this.writer = l;
             this.reader = l;
         }
@@ -61,6 +63,11 @@ namespace SolidPrinciples
             return message;
         }
 
+        public FileInfo GetFileInfo(int id)
+        {
+            return new FileInfo(Path.Combine(this.WorkingDirectory.FullName, id + ".txt"));
+        }
+
         protected virtual IStoreLogger Logger
         {
             get { return this.logger; }
@@ -79,6 +86,16 @@ namespace SolidPrinciples
         public virtual IStoreWriter Writer
         {
             get { return this.writer; }
+        }
+
+        public virtual IStoreReader Reader
+        {
+            get { return this.reader; }
+        }
+
+        public virtual IFileLocator FileLocator
+        {
+            get { return this.fileLocator; }
         }
     }
 }
