@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SolidPrinciples
 {
-    public class StoreLogger : IStoreLogger, IStoreWriter, IStoreReader
+    public class StoreLogger : IStoreWriter, IStoreReader
     {
         private readonly IStoreWriter writer;
         private readonly IStoreReader reader;
